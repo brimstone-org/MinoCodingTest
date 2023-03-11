@@ -29,7 +29,7 @@ public class UIUXManager : MonoBehaviour
     //Calls the start game function in the gameplay manager
     public void StartTheGame()
     {
-        var isNumeric = int.TryParse("123", out int numberOfSnakes);
+        var isNumeric = int.TryParse(noOfPlayersInput.text, out int numberOfSnakes);
         if (string.IsNullOrEmpty(noOfPlayersInput.text) || string.IsNullOrWhiteSpace(noOfPlayersInput.text) || !isNumeric || numberOfSnakes>4)
         {
             return;

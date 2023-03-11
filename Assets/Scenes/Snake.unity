@@ -820,6 +820,7 @@ GameObject:
   m_Component:
   - component: {fileID: 667463703}
   - component: {fileID: 667463704}
+  - component: {fileID: 667463705}
   m_Layer: 5
   m_Name: TogglesHolder
   m_TagString: Untagged
@@ -876,6 +877,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &667463705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667463702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 0
 --- !u!1 &692713274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1898,34 +1912,10 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 337730617}
   toggleTransition: 1
   graphic: {fileID: 2087226003}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 667463705}
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2096738683}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
-        m_MethodName: set_isOn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1350271648}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
-        m_MethodName: set_isOn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 981035547}
         m_TargetAssemblyTypeName: UIUXManager, Assembly-CSharp
         m_MethodName: SelectDifficultyLevel
@@ -2076,34 +2066,10 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1311092619}
   toggleTransition: 1
   graphic: {fileID: 1981915104}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 667463705}
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2096738683}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
-        m_MethodName: set_isOn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1240434915}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
-        m_MethodName: set_isOn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 981035547}
         m_TargetAssemblyTypeName: UIUXManager, Assembly-CSharp
         m_MethodName: SelectDifficultyLevel
@@ -2411,7 +2377,7 @@ MonoBehaviour:
   rightBorder: {fileID: 2055551544}
   leftBorder: {fileID: 941177315}
   snakePrefab: {fileID: 7980556720408480888, guid: 9977d2e834d468d479338dbbead3a55a, type: 3}
-  applePrefab: {fileID: 0}
+  applePrefab: {fileID: 8571753309014124999, guid: c8e86e94e4aba474f953b20a0c2eaf0a, type: 3}
 --- !u!4 &1766197598
 Transform:
   m_ObjectHideFlags: 0
@@ -3044,34 +3010,10 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 532874472}
   toggleTransition: 1
   graphic: {fileID: 1701228786}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 667463705}
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1350271648}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
-        m_MethodName: set_isOn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1240434915}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
-        m_MethodName: set_isOn
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 981035547}
         m_TargetAssemblyTypeName: UIUXManager, Assembly-CSharp
         m_MethodName: SelectDifficultyLevel

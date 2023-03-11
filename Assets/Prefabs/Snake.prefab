@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -5177388603050735206, guid: 8884154dfe85442a3a3578be807dbcdf, type: 3}
   m_Color: {r: 0.021558044, g: 0.18867922, b: 0.0060519623, a: 1}
   m_FlipX: 0
@@ -148,3 +148,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snakeSegments: []
   snakeSegmentPrefab: {fileID: 1540881059846545120, guid: 3c4487aff20925b449d3f7f101b0f53d, type: 3}
+  gameplayManager: {fileID: 0}
+  uiuxManager: {fileID: 0}

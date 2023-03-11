@@ -1,23 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Snake : MonoBehaviour
 {
-    private Vector2 direction = Vector2.zero; //vector to keep track of which direction the snake is moving in
+    [Header("Snake Data")]
     [SerializeField]
     private List<Transform> snakeSegments = new List<Transform>();
     [SerializeField]
     private Transform snakeSegmentPrefab;
+    private Color32 snakeColor = new Color32();
     
+    [Header("References to Managers")]
     public GameplayManager gameplayManager; //reference to the gameplay manager
     public UIUXManager uiuxManager; //reference to the ui manager
 
-    private void Start()
+    [Header("Input and Movement")]
+    private Vector2 direction = Vector2.zero; //vector to keep track of which direction the snake is moving in
+    private SnakeController snakeController;
+    private InputAction move; //stores a reference to the move action
+
+    /// <summary>
+    /// called by the gameplay manager after spawning the snake
+    /// </summary>
+    public void InitializeSnake(int index)
     {
         snakeSegments.Add(transform);
+        snakeController = new SnakeController(); //initializes the player input
+        move = snakeController.FindAction("MovePlayer" + (index + 1));
+        move.performed += DoSetMoveDirection;
+        snakeColor = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
+        GetComponent<SpriteRenderer>().color = snakeColor;
+        snakeController.Enable();
     }
 
+    
     /// <summary>
     /// adds a new segment to the snake
     /// </summary>
@@ -25,10 +43,13 @@ public class Snake : MonoBehaviour
     {
         Transform newSegment = Instantiate(snakeSegmentPrefab);
         newSegment.position = snakeSegments[snakeSegments.Count - 1].position;
+        newSegment.GetComponent<SpriteRenderer>().color = snakeColor;
         snakeSegments.Add(newSegment);
+        
     }
 
-    private void ResetSnake()
+    //called when the snake dies
+    private void DestroySnake()
     {
         for (int i = snakeSegments.Count-1; i >0; i--)
         {
@@ -36,8 +57,42 @@ public class Snake : MonoBehaviour
             snakeSegments.RemoveAt(i);
         }
         snakeSegments.TrimExcess();
+        move.performed -= DoSetMoveDirection;
+        snakeController.Disable();
         Destroy(gameObject);
     }
+
+    /// <summary>
+    /// called by the bindings in the input system
+    /// </summary>
+    /// <param name="context"></param>
+    private void DoSetMoveDirection(InputAction.CallbackContext context)
+    {
+        Vector2 newDir = context.ReadValue<Vector2>();
+        if (context.ReadValue<Vector2>().normalized.y>0)
+        {
+            direction = Vector2.up;
+        }
+        else if (context.ReadValue<Vector2>().normalized.y< 0)
+        {
+            direction = Vector2.down;
+        }
+        else if (context.ReadValue<Vector2>().normalized.x < 0)
+        {
+            direction = Vector2.left;
+        }
+        else if (context.ReadValue<Vector2>().normalized.x > 0)
+        {
+            direction = Vector2.right;
+        }
+        ////if (direction.normalized.x != -newDir.normalized.x && direction.normalized.y != -newDir.normalized.y)
+        //{
+        //    direction = context.ReadValue<Vector2>().normalized;
+        //}
+        
+    }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag.Equals("Apple"))
@@ -46,31 +101,34 @@ public class Snake : MonoBehaviour
         }
         else //collided with anything else
         {
-            ResetSnake();
+            DestroySnake();
         }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            direction = Vector2.up;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            direction = Vector2.down;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            direction = Vector2.left;
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            direction = Vector2.right;
-        }
+       
+        //if (Input.GetKeyDown(KeyCode.UpArrow))
+        //{
+        //    direction = Vector2.up;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.DownArrow))
+        //{
+        //    direction = Vector2.down;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        //{
+        //    direction = Vector2.left;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.RightArrow))
+        //{
+        //    direction = Vector2.right;
+        //}
     }
 
-
+    /// <summary>
+    /// moves the snake
+    /// </summary>
     private void FixedUpdate()
     {
         for (int i = snakeSegments.Count-1; i >0; i--)

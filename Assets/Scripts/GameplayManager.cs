@@ -59,13 +59,14 @@ public class GameplayManager : MonoBehaviour
         {
             Camera.main.orthographicSize = gridHeight / cameraYRatio;
         }
+        SelectDifficultyLevel(difficultyLevel);
     }
 
     /// <summary>
-    /// generates the new coordinates for the  apple
+    /// generates the new coordinates for the apple and the snakes
     /// </summary>
     /// <returns></returns>
-    public Vector2 GenerateCoordinatesForFood()
+    public Vector2 GenerateCoordinatesForSpawning()
     {
         int x = (int)Random.Range(leftBorder.position.x,
                               rightBorder.position.x);
@@ -109,11 +110,17 @@ public class GameplayManager : MonoBehaviour
     }
 
     /// <summary>
-    /// starts the game
+    /// Generates snakes and starts the game
     /// </summary>
     public void StartTheGame()
     {
-
+        for (int i = 0; i < numberOfSnakes; i++)
+        {
+            Snake newSnake = Instantiate(snakePrefab, GenerateCoordinatesForSpawning(), Quaternion.identity);
+            newSnake.InitializeSnake(i);
+        }
+        Apple apple = Instantiate(applePrefab, GenerateCoordinatesForSpawning(), Quaternion.identity);
+        apple.gameplayManager = this;
     }
     
 }

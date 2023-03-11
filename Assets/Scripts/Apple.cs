@@ -6,14 +6,9 @@ public class Apple : MonoBehaviour
 {
     public GameplayManager gameplayManager;
 
-    private void Start()
-    {
-        GenerateRandomPosition();
-    }
-
     public void GenerateRandomPosition()
     {
-        transform.position = gameplayManager.GenerateCoordinatesForFood();
+        transform.position = gameplayManager.GenerateCoordinatesForSpawning();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
