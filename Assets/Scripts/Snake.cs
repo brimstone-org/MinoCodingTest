@@ -11,8 +11,8 @@ public class Snake : MonoBehaviour
     [SerializeField]
     private Transform snakeSegmentPrefab;
     private Color32 snakeColor = new Color32();
-    private int snakeIndex = 0;
-    private int applesCollected = 0;
+    private int snakeIndex = 0; //the index of the snake e.g. its spawn order
+    private int applesCollected = 0; //number of apples collected
     
     [Header("References to Managers")]
     public GameplayManager gameplayManager; //reference to the gameplay manager
@@ -96,10 +96,7 @@ public class Snake : MonoBehaviour
             if (direction != Vector2.left)
                 direction = Vector2.right;
         }
-        ////if (direction.normalized.x != -newDir.normalized.x && direction.normalized.y != -newDir.normalized.y)
-        //{
-        //    direction = context.ReadValue<Vector2>().normalized;
-        //}
+
         
     }
 
@@ -112,9 +109,11 @@ public class Snake : MonoBehaviour
         }
         else //collided with anything else
         {
+            Debug.Log("Collided with " + collision.tag);
             DestroySnake();
         }
     }
+
 
 
     /// <summary>
@@ -126,6 +125,7 @@ public class Snake : MonoBehaviour
         {
             snakeSegments[i].position = snakeSegments[i - 1].position;
         }
-        transform.position = new Vector2(Mathf.Round(transform.position.x) + direction.x, Mathf.Round(transform.position.y) + direction.y);
+        transform.position = new Vector2(Mathf.Round(transform.position.x) + direction.x*4, Mathf.Round(transform.position.y) + direction.y*4);
     }
+
 }

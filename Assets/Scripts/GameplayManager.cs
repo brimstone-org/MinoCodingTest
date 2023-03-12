@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour
 {
     [SerializeField]
+    private LayerMask gamePlayLayer;
+    [SerializeField]
     private int gridWidth = 48;
     [SerializeField]
     private int gridHeight = 24;
@@ -21,10 +23,11 @@ public class GameplayManager : MonoBehaviour
     [SerializeField]
     private Snake snakePrefab;
     [SerializeField]
-    private Apple applePrefab;
+    private Apple applePrefab; // the apple prefab to spawn
+    private Apple apple; //the apple object in the game
     //the below variables represent the ratio between the default camera orthographic size and the optimal sizes of the board on both axis. They are used to zoom the camera out or in based on the size of the board
-    private float cameraXRatio = 3.2f;
-    private float cameraYRatio = 1.6f;
+    private float cameraXRatio = 3f;
+    private float cameraYRatio = 1.5f;
     private UIUXManager uiuxManager; //uimanager gameplay
     private int difficultyLevel = 1; //easy by default
     private int numberOfSnakes = 0; //number of snakes in the game
@@ -37,28 +40,51 @@ public class GameplayManager : MonoBehaviour
 
     private void Start()
     {
-        //set board scale 
-        gridBackground.localScale = new Vector3(gridWidth, gridHeight, 0);
+       
+        //Due to having collider issues because of small colliders I increased the scale of the whole game time 4. Here, I am adjusting the grid to have sizes that are multiples of 4
+        var outputWidth = GetNearestWholeMultiple(gridWidth,4);
+        var outputHeight = GetNearestWholeMultiple(gridHeight, 4);
+        //set board scale
+        gridBackground.localScale = new Vector3(outputWidth, outputHeight, 0);
         //set borders positions
-        topBorder.localPosition = new Vector2(0, Mathf.Round(gridHeight / 2));
-        bottomBorder.localPosition = new Vector2(0, Mathf.Round(-gridHeight / 2));
-        rightBorder.localPosition = new Vector2(Mathf.Round(gridWidth / 2), 0 );
-        leftBorder.localPosition = new Vector2(Mathf.Round(-gridWidth / 2), 0);
+        topBorder.localPosition = new Vector2(0, Mathf.CeilToInt((float)outputHeight / 8)*4);
+        bottomBorder.localPosition = new Vector2(0, -Mathf.CeilToInt((float) outputHeight / 8)*4);
+        rightBorder.localPosition = new Vector2(Mathf.CeilToInt((float)outputWidth / 8) *4 , 0 );
+        leftBorder.localPosition = new Vector2(-Mathf.CeilToInt((float) outputWidth / 8)*4 , 0);
         //set borders scales
-        topBorder.localScale = new Vector3(gridWidth - (gridWidth%2-1), 1, 0);
-        bottomBorder.localScale = new Vector3(gridWidth - (gridWidth % 2-1), 1, 0);
-        rightBorder.localScale = new Vector3(1, gridHeight- (gridHeight % 2-1), 0);
-        leftBorder.localScale = new Vector3(1, gridHeight- (gridHeight % 2-1), 0);
+        topBorder.localScale = new Vector3(outputWidth - (outputWidth%2)+4, 4, 0);
+        bottomBorder.localScale = new Vector3(outputWidth - (outputWidth % 2)+4  , 4, 0);
+        rightBorder.localScale = new Vector3(4, outputHeight- (outputHeight % 2)+4 , 0);
+        leftBorder.localScale = new Vector3(4, outputHeight- (outputHeight % 2)+4, 0);
         //set camera size
-        if (gridWidth >= gridHeight)
+        if (outputWidth >= outputHeight)
         {
-            Camera.main.orthographicSize = gridWidth / cameraXRatio;
+            Camera.main.orthographicSize = outputWidth / cameraXRatio;
+            if ((outputWidth/outputHeight) <= cameraYRatio*1.1f)
+            {
+                Camera.main.orthographicSize = outputHeight / cameraYRatio;
+            }
         }
         else
         {
-            Camera.main.orthographicSize = gridHeight / cameraYRatio;
+            Camera.main.orthographicSize = outputHeight / cameraYRatio;
         }
         SelectDifficultyLevel(difficultyLevel);
+    }
+
+    /// <summary>
+    /// get proper value based on the game multiplier. I had to multiply everything by 4 to solve the issue of colliders not working
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    private int GetNearestWholeMultiple(int input, int x)
+    {
+        int output = Mathf.RoundToInt(input / x);
+        if (output == 0 && input > 0) output += 1;
+        output *= x;
+
+        return output;
     }
 
     /// <summary>
@@ -67,13 +93,22 @@ public class GameplayManager : MonoBehaviour
     /// <returns></returns>
     public Vector2 GenerateCoordinatesForSpawning()
     {
-        int x = (int)Random.Range(leftBorder.position.x,
-                              rightBorder.position.x);
+        int x = GetNearestWholeMultiple((int)Random.Range(leftBorder.position.x+4 ,
+                              rightBorder.position.x-4 ), 4);
 
         // y position between top & bottom border
-        int y = (int)Random.Range(bottomBorder.position.y,
-                                  topBorder.position.y);
-        return new Vector2(x, y);
+        int y = GetNearestWholeMultiple((int)Random.Range(bottomBorder.position.y+4,
+                                  topBorder.position.y-4 ), 4);
+        //check if another object is in the way
+        if (Physics2D.OverlapCircle(new Vector2(x, y), 1f, gamePlayLayer)!=null)
+        {
+            return GenerateCoordinatesForSpawning();
+        }
+        else
+        {
+            return new Vector2(x, y);
+        }
+       
     }
 
     /// <summary>
@@ -89,10 +124,10 @@ public class GameplayManager : MonoBehaviour
                 Time.fixedDeltaTime = 0.12f;
                 break;
             case 2:
-                Time.fixedDeltaTime = 0.08f;
+                Time.fixedDeltaTime = 0.09f;
                 break;
             case 3:
-                Time.fixedDeltaTime = 0.04f;
+                Time.fixedDeltaTime = 0.07f;
                 break;
             default:
                 break;
@@ -117,6 +152,10 @@ public class GameplayManager : MonoBehaviour
         if (numberOfSnakes <= 0)
         {
             //game over
+            if (apple != null)
+            {
+                Destroy(apple.gameObject);
+            }
             uiuxManager.ToggleMenu();
         }
     }
@@ -134,7 +173,7 @@ public class GameplayManager : MonoBehaviour
             uiuxManager.SpawneScore(i);
             newSnake.InitializeSnake(i);
         }
-        Apple apple = Instantiate(applePrefab, GenerateCoordinatesForSpawning(), Quaternion.identity);
+        apple = Instantiate(applePrefab, GenerateCoordinatesForSpawning(), Quaternion.identity);
         apple.gameplayManager = this;
     }
     

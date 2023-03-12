@@ -44,12 +44,10 @@ public class UIUXManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        scores.Clear();
         gameplayManager.SetNumberOfSnakes(numberOfSnakes);
         gameplayManager.StartTheGame();
-       
         ToggleMenu();
-
-
     }
 
     /// <summary>

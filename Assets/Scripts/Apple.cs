@@ -6,6 +6,9 @@ public class Apple : MonoBehaviour
 {
     public GameplayManager gameplayManager;
 
+    /// <summary>
+    /// generates a random position for the apple after it was collected
+    /// </summary>
     public void GenerateRandomPosition()
     {
         transform.position = gameplayManager.GenerateCoordinatesForSpawning();
