@@ -2512,8 +2512,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee02d2b56df061479ec2673712e2357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamePlayLayer:
+    serializedVersion: 2
+    m_Bits: 8
   gridWidth: 192
-  gridHeight: 96
+  gridHeight: 90
   gridBackground: {fileID: 1210428329}
   topBorder: {fileID: 1215696861}
   bottomBorder: {fileID: 254124154}
