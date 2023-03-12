@@ -150,3 +150,14 @@ MonoBehaviour:
   snakeSegmentPrefab: {fileID: 1540881059846545120, guid: 3c4487aff20925b449d3f7f101b0f53d, type: 3}
   gameplayManager: {fileID: 0}
   uiuxManager: {fileID: 0}
+  snakeColors:
+  - serializedVersion: 2
+    rgba: 4278333445
+  - serializedVersion: 2
+    rgba: 4294912256
+  - serializedVersion: 2
+    rgba: 4278190847
+  - serializedVersion: 2
+    rgba: 4278255615
+  - serializedVersion: 2
+    rgba: 4287955075

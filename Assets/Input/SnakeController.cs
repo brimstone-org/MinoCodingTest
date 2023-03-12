@@ -44,6 +44,24 @@ public partial class @SnakeController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MovePlayer3"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""6877bba2-4584-4d21-9123-3df44f8e8b6e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MovePlayer4"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""5d3b1431-1ce7-482f-8f1d-51dc2de39816"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -156,6 +174,72 @@ public partial class @SnakeController : IInputActionCollection2, IDisposable
                     ""action"": ""MovePlayer2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""UHJK"",
+                    ""id"": ""fad870fc-a796-4b09-9882-0fb07137ee15"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer3"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""6e6cbe27-7a75-4351-b059-1f81ced4eeed"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""01cdf4bd-ff5b-4d1d-93f3-e994722ef89c"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""00b2eca9-c925-4b95-bb24-6be50df5ca01"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""46a9aa43-e2af-4f15-8f52-b5f65edb5d4b"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e0342c7-c737-4cac-8ee2-de68a3bc7249"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -166,6 +250,8 @@ public partial class @SnakeController : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_MovePlayer1 = m_Player.FindAction("MovePlayer1", throwIfNotFound: true);
         m_Player_MovePlayer2 = m_Player.FindAction("MovePlayer2", throwIfNotFound: true);
+        m_Player_MovePlayer3 = m_Player.FindAction("MovePlayer3", throwIfNotFound: true);
+        m_Player_MovePlayer4 = m_Player.FindAction("MovePlayer4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,12 +313,16 @@ public partial class @SnakeController : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_MovePlayer1;
     private readonly InputAction m_Player_MovePlayer2;
+    private readonly InputAction m_Player_MovePlayer3;
+    private readonly InputAction m_Player_MovePlayer4;
     public struct PlayerActions
     {
         private @SnakeController m_Wrapper;
         public PlayerActions(@SnakeController wrapper) { m_Wrapper = wrapper; }
         public InputAction @MovePlayer1 => m_Wrapper.m_Player_MovePlayer1;
         public InputAction @MovePlayer2 => m_Wrapper.m_Player_MovePlayer2;
+        public InputAction @MovePlayer3 => m_Wrapper.m_Player_MovePlayer3;
+        public InputAction @MovePlayer4 => m_Wrapper.m_Player_MovePlayer4;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -248,6 +338,12 @@ public partial class @SnakeController : IInputActionCollection2, IDisposable
                 @MovePlayer2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer2;
                 @MovePlayer2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer2;
                 @MovePlayer2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer2;
+                @MovePlayer3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer3;
+                @MovePlayer3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer3;
+                @MovePlayer3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer3;
+                @MovePlayer4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer4;
+                @MovePlayer4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer4;
+                @MovePlayer4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer4;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -258,6 +354,12 @@ public partial class @SnakeController : IInputActionCollection2, IDisposable
                 @MovePlayer2.started += instance.OnMovePlayer2;
                 @MovePlayer2.performed += instance.OnMovePlayer2;
                 @MovePlayer2.canceled += instance.OnMovePlayer2;
+                @MovePlayer3.started += instance.OnMovePlayer3;
+                @MovePlayer3.performed += instance.OnMovePlayer3;
+                @MovePlayer3.canceled += instance.OnMovePlayer3;
+                @MovePlayer4.started += instance.OnMovePlayer4;
+                @MovePlayer4.performed += instance.OnMovePlayer4;
+                @MovePlayer4.canceled += instance.OnMovePlayer4;
             }
         }
     }
@@ -266,5 +368,7 @@ public partial class @SnakeController : IInputActionCollection2, IDisposable
     {
         void OnMovePlayer1(InputAction.CallbackContext context);
         void OnMovePlayer2(InputAction.CallbackContext context);
+        void OnMovePlayer3(InputAction.CallbackContext context);
+        void OnMovePlayer4(InputAction.CallbackContext context);
     }
 }

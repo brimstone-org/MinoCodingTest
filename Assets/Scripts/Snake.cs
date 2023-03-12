@@ -11,6 +11,8 @@ public class Snake : MonoBehaviour
     [SerializeField]
     private Transform snakeSegmentPrefab;
     private Color32 snakeColor = new Color32();
+    private int snakeIndex = 0;
+    private int applesCollected = 0;
     
     [Header("References to Managers")]
     public GameplayManager gameplayManager; //reference to the gameplay manager
@@ -18,6 +20,8 @@ public class Snake : MonoBehaviour
 
     [Header("Input and Movement")]
     private Vector2 direction = Vector2.zero; //vector to keep track of which direction the snake is moving in
+    [SerializeField]
+    private List<Color32> snakeColors = new List<Color32>();
     private SnakeController snakeController;
     private InputAction move; //stores a reference to the move action
 
@@ -30,8 +34,9 @@ public class Snake : MonoBehaviour
         snakeController = new SnakeController(); //initializes the player input
         move = snakeController.FindAction("MovePlayer" + (index + 1));
         move.performed += DoSetMoveDirection;
-        snakeColor = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
+        snakeColor = snakeColors[index];
         GetComponent<SpriteRenderer>().color = snakeColor;
+        snakeIndex = index;
         snakeController.Enable();
     }
 
@@ -44,6 +49,8 @@ public class Snake : MonoBehaviour
         Transform newSegment = Instantiate(snakeSegmentPrefab);
         newSegment.position = snakeSegments[snakeSegments.Count - 1].position;
         newSegment.GetComponent<SpriteRenderer>().color = snakeColor;
+        applesCollected++;
+        uiuxManager.UpdateScore(snakeIndex, applesCollected);
         snakeSegments.Add(newSegment);
         
     }
@@ -59,6 +66,7 @@ public class Snake : MonoBehaviour
         snakeSegments.TrimExcess();
         move.performed -= DoSetMoveDirection;
         snakeController.Disable();
+        gameplayManager.RemoveSnake();
         Destroy(gameObject);
     }
 
@@ -68,22 +76,25 @@ public class Snake : MonoBehaviour
     /// <param name="context"></param>
     private void DoSetMoveDirection(InputAction.CallbackContext context)
     {
-        Vector2 newDir = context.ReadValue<Vector2>();
         if (context.ReadValue<Vector2>().normalized.y>0)
         {
-            direction = Vector2.up;
+            if (direction!=Vector2.down)
+                direction = Vector2.up;
         }
         else if (context.ReadValue<Vector2>().normalized.y< 0)
         {
-            direction = Vector2.down;
+            if (direction != Vector2.up)
+                direction = Vector2.down;
         }
         else if (context.ReadValue<Vector2>().normalized.x < 0)
         {
-            direction = Vector2.left;
+            if (direction != Vector2.right)
+                direction = Vector2.left;
         }
         else if (context.ReadValue<Vector2>().normalized.x > 0)
         {
-            direction = Vector2.right;
+            if (direction != Vector2.left)
+                direction = Vector2.right;
         }
         ////if (direction.normalized.x != -newDir.normalized.x && direction.normalized.y != -newDir.normalized.y)
         //{
@@ -105,26 +116,6 @@ public class Snake : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-       
-        //if (Input.GetKeyDown(KeyCode.UpArrow))
-        //{
-        //    direction = Vector2.up;
-        //}
-        //else if (Input.GetKeyDown(KeyCode.DownArrow))
-        //{
-        //    direction = Vector2.down;
-        //}
-        //else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        //{
-        //    direction = Vector2.left;
-        //}
-        //else if (Input.GetKeyDown(KeyCode.RightArrow))
-        //{
-        //    direction = Vector2.right;
-        //}
-    }
 
     /// <summary>
     /// moves the snake

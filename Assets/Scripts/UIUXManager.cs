@@ -10,6 +10,11 @@ public class UIUXManager : MonoBehaviour
     private InputField noOfPlayersInput;
     [SerializeField]
     private GameObject mainMenu;
+    [SerializeField]
+    private Transform scoreTransform; //the holder where we'll spawn the 
+    [SerializeField]
+    private GameObject scorePrefab; //prefab for the score item
+    private List<Text> scores = new List<Text>(); //list of score items
 
     private void Awake()
     {
@@ -34,10 +39,47 @@ public class UIUXManager : MonoBehaviour
         {
             return;
         }
+        //clear score board
+        foreach (Transform child in scoreTransform)
+        {
+            Destroy(child.gameObject);
+        }
         gameplayManager.SetNumberOfSnakes(numberOfSnakes);
         gameplayManager.StartTheGame();
-        mainMenu.SetActive(false);
-        
+       
+        ToggleMenu();
+
+
+    }
+
+    /// <summary>
+    /// toggles the main menu
+    /// </summary>
+    public void ToggleMenu()
+    {
+        mainMenu.SetActive(!mainMenu.activeSelf);
+    }
+
+    /// <summary>
+    /// spawns a score element
+    /// </summary>
+    /// <param name="index"></param>
+    public void SpawneScore(int index)
+    {
+        GameObject newScore = Instantiate(scorePrefab, scoreTransform);
+        Text newText = newScore.GetComponent<Text>();
+        newText.text = "Player "+(index+1)+ ": 0";
+        scores.Add(newText);
+    }
+
+    /// <summary>
+    /// updates the score for a snake
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="score"></param>
+    public void UpdateScore(int index, int score)
+    {
+        scores[index].text = "Player " + (index+1) + ": " + score;
     }
 
 }

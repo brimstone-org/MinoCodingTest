@@ -27,12 +27,11 @@ public class GameplayManager : MonoBehaviour
     private float cameraYRatio = 1.6f;
     private UIUXManager uiuxManager; //uimanager gameplay
     private int difficultyLevel = 1; //easy by default
-    private int numberOfSnakes = 0; //easy by default
+    private int numberOfSnakes = 0; //number of snakes in the game
 
     private void Awake()
     {
         uiuxManager = FindObjectOfType<UIUXManager>();
-
     }
 
 
@@ -110,6 +109,19 @@ public class GameplayManager : MonoBehaviour
     }
 
     /// <summary>
+    /// removes a snake from the game
+    /// </summary>
+    public void RemoveSnake()
+    {
+        numberOfSnakes--;
+        if (numberOfSnakes <= 0)
+        {
+            //game over
+            uiuxManager.ToggleMenu();
+        }
+    }
+
+    /// <summary>
     /// Generates snakes and starts the game
     /// </summary>
     public void StartTheGame()
@@ -117,6 +129,9 @@ public class GameplayManager : MonoBehaviour
         for (int i = 0; i < numberOfSnakes; i++)
         {
             Snake newSnake = Instantiate(snakePrefab, GenerateCoordinatesForSpawning(), Quaternion.identity);
+            newSnake.gameplayManager = this;
+            newSnake.uiuxManager = uiuxManager;
+            uiuxManager.SpawneScore(i);
             newSnake.InitializeSnake(i);
         }
         Apple apple = Instantiate(applePrefab, GenerateCoordinatesForSpawning(), Quaternion.identity);
