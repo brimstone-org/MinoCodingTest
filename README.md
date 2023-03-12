@@ -1,4 +1,7 @@
 # MinoCodingTest
+Time it took to make:
+8.5 hours
+
 Features present in the game:
 
 - selection of up to 4 players
